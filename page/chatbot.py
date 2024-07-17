@@ -2,12 +2,6 @@ import streamlit as st
 import os
 from dotenv import dotenv_values
 # from unstructured.partition.auto import partition
-# from RAG_utils import (
-#     initialize_cohere_client, 
-#     initialize_qdrant_collection, 
-#     qdrant_upload, qdrant_search, 
-#     extract_text_from_docx, 
-#     chunk_text)
 import RAG_utils
 import uuid
 
@@ -80,7 +74,7 @@ if prompt := st.chat_input("Ask a question about the uploaded CVs"):
                 for query in response_query.search_queries:
                     st.write(f"Generated query: *{query.text}*")
                     # Get documents from Qdrant semantic search engine
-                    docs_retrieved = RAG_utils.qdrant_search(qdrant_client, collection_name="CV_documents", query=query.text, 
+                    docs_retrieved = RAG_utils.qdrant_search(qdrant_client, collection_name=st.session_state.collection_name, query=query.text, 
                                                              team_filter=team_filter, text_filter=text_filter, top_k=5)
                     documents.extend(docs_retrieved)
                 # for doc in documents:
