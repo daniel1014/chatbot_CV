@@ -3,7 +3,7 @@ import os
 from dotenv import dotenv_values
 import html_utils
 
-st.set_page_config(page_title="CV Chatbot", page_icon="📄")
+st.set_page_config(page_title="AECOM IPC | CV Chatbot", page_icon="📄")
 html_utils.set_page_background_local("assets/background.png")
 
 if "role" not in st.session_state:
