@@ -9,8 +9,6 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 import uuid
 
 config = dotenv_values(".env")
-qdrant_url = config["QDRANT_ENDPOINT"]
-qdrant_api_key = config["QDRANT_API_KEY"]
 
 @st.cache_resource(show_spinner=False)
 def initialize_cohere_client() -> cohere.Client:
@@ -97,20 +95,8 @@ def qdrant_search(qdrant_client, collection_name, query: str, team_filter: Optio
         )
     
     query_filter = models.Filter(must=must_conditions) if must_conditions else None
-    # if text_filter:
-    #     # Define a filter for the query
-    #     query_filter = models.Filter(
-    #         must=[
-    #             models.FieldCondition(
-    #                 key="document", 
-    #                 match=models.MatchText(text=text_filter),
-    #             ),
-    #             models.FieldCondition(
-    #                 key="team", 
-    #                 match=models.MatchText(text=team_filter),
-    #             )
-    #         ]
-    #     )
+
+    # Perform the search
     search_result = qdrant_client.query(
         collection_name=collection_name,
         query_text=query,
