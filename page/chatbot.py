@@ -67,7 +67,7 @@ if prompt := st.chat_input("Ask a question about the uploaded CVs"):
         status_placeholder = st.empty()
         text_placeholder = st.empty()
         with status_placeholder.status("Thinking...") as status:
-            response_query = co.chat(message=prompt, search_queries_only=True, conversation_id=st.session_state.conversation_id)
+            response_query = co.chat(message=prompt, search_queries_only=True, conversation_id=st.session_state.conversation_id, preamble = "Please always generate a search query based on the user's message to retrieve relevant documents when necessary.")
             # If there are search queries, retrieve document chunks and respond
             if response_query.search_queries:
                 documents = []
@@ -102,7 +102,8 @@ if prompt := st.chat_input("Ask a question about the uploaded CVs"):
                     full_response += event.text
                     text_placeholder.markdown(full_response)
                 elif event.event_type == "search-results":
-                    print(event.documents)
+                    for doc in event.documents:
+                        print(doc)
             # Record the conversation 
             st.session_state.messages.append({"role": "user", "content": prompt})
             st.session_state.messages.append({"role": "assistant", "content": full_response})

@@ -9,7 +9,7 @@ html_utils.set_page_background_local("assets/background.png")
 if "role" not in st.session_state:
     st.session_state.role = None
 if "collection_name" not in st.session_state:
-    st.session_state.collection_name = "CV_documents"
+    st.session_state.collection_name = "CV_hybrid"
 
 ROLES = ["User", "Admin"]
 
@@ -45,7 +45,7 @@ chatbot_page = st.Page(
 
 admin_1 = st.Page(
     "page/admin.py",
-    title="Knowledge Base",
+    title="CV Knowledge Base",
     icon=":material/database:",
     default=(role == "Admin"),
 )

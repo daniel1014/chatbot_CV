@@ -30,9 +30,14 @@ def initialize_qdrant_client() -> QdrantClient:
         qdrant_url = st.secrets['QDRANT_ENDPOINT']
     return QdrantClient(url=qdrant_url, api_key=qdrant_api_key)
 
-def qdrant_add(qdrant_client, collection_name, chunks: list[str], metadata: list[dict]):
+def qdrant_add(qdrant_client, collection_name, chunks: list[str], metadata: list[dict], hybrid: Optional[bool] = False):
     # Generate a list of random UUID integers for each document
     ids = [str(uuid.uuid4()) for _ in chunks]  # a list comprehension generating UUID integers
+
+    if hybrid:
+        # Use a hybrid model for encoding 
+        qdrant_client.set_model("sentence-transformers/all-MiniLM-L6-v2")
+        qdrant_client.set_sparse_model("prithivida/Splade_PP_en_v1")
 
     # Use the new add() instead of upsert()
     # This internally calls embed() of the configured embedding model
