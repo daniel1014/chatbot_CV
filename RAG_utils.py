@@ -19,7 +19,7 @@ def initialize_cohere_client() -> cohere.Client:
     return cohere.Client(cohere_api_key) 
 
 @st.cache_resource(show_spinner=False)
-def initialize_qdrant_client() -> QdrantClient:
+def initialize_qdrant_client(hybrid: Optional[bool] = False) -> QdrantClient:
     if 'QDRANT_API_KEY' in config:
         qdrant_api_key = config['QDRANT_API_KEY']
     elif 'QDRANT_API_KEY' in st.secrets:
@@ -28,16 +28,16 @@ def initialize_qdrant_client() -> QdrantClient:
         qdrant_url = config['QDRANT_ENDPOINT']
     elif 'QDRANT_ENDPOINT' in st.secrets:
         qdrant_url = st.secrets['QDRANT_ENDPOINT']
-    return QdrantClient(url=qdrant_url, api_key=qdrant_api_key)
-
-def qdrant_add(qdrant_client, collection_name, chunks: list[str], metadata: list[dict], hybrid: Optional[bool] = False):
-    # Generate a list of random UUID integers for each document
-    ids = [str(uuid.uuid4()) for _ in chunks]  # a list comprehension generating UUID integers
-
+    qdrant_client = QdrantClient(url=qdrant_url, api_key=qdrant_api_key)
     if hybrid:
         # Use a hybrid model for encoding 
         qdrant_client.set_model("sentence-transformers/all-MiniLM-L6-v2")
         qdrant_client.set_sparse_model("prithivida/Splade_PP_en_v1")
+    return qdrant_client
+
+def qdrant_add(qdrant_client, collection_name, chunks: list[str], metadata: list[dict]):
+    # Generate a list of random UUID integers for each document
+    ids = [str(uuid.uuid4()) for _ in chunks]  # a list comprehension generating UUID integers
 
     # Use the new add() instead of upsert()
     # This internally calls embed() of the configured embedding model

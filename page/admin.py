@@ -26,7 +26,7 @@ def delete_confirm():
 
 with tab1:
     # Fetch documents from Qdrant collection
-    qdrant_client = RAG_utils.initialize_qdrant_client()
+    qdrant_client = RAG_utils.initialize_qdrant_client(hybrid=True)        # Use hybrid indexing by Qdrant from the RAG_utils.py
     
     # Fetch all documents from the collection
     st.session_state['stored_docs'] = RAG_utils.qdrant_scroll(qdrant_client, st.session_state.collection_name)
@@ -93,7 +93,6 @@ with tab2:
                     collection_name=st.session_state.collection_name,
                     chunks=chunks,
                     metadata=metadata,
-                    hybrid=True,        # Use hybrid indexing by Qdrant from the RAG_utils.py
                 )
                 print(f"Added {uploaded_file.name} with {len(chunks)} chunks to the collection")
             st.success(f"Successfully processed and uploaded ***{[file.name for file in uploaded_files]}*** to the database")
