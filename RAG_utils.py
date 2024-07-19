@@ -32,7 +32,7 @@ def initialize_qdrant_client(hybrid: Optional[bool] = False) -> QdrantClient:
     if hybrid:
         # Use a hybrid model for encoding 
         qdrant_client.set_model("sentence-transformers/all-MiniLM-L6-v2")
-        qdrant_client.set_sparse_model("prithivida/Splade_PP_en_v1")
+        # qdrant_client.set_sparse_model("prithivida/Splade_PP_en_v1")
     return qdrant_client
 
 def qdrant_add(qdrant_client, collection_name, chunks: list[str], metadata: list[dict]):

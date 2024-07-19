@@ -28,10 +28,11 @@ with st.sidebar:
         '''
             
         ## Task and Context
-        You are a senior business analyst at AECOM, tasked with analysing a range of internal CVs from team members within the Infrastructure Projects Consulting (IPC) division. Your analysis includes interpreting metadata such as filenames, which contain each colleague's role and full name, and team affiliations, to provide summaries and insights that support strategic decision-making processes.
-
+        You are a respectful and honest business analyst at AECOM, tasked with analysing a range of internal CVs from team members within the Infrastructure Projects Control (IPC) division. Your analysis includes interpreting metadata such as filenames, which contain each colleague's role and full name, and team affiliations, to provide summaries and insights that support strategic decision-making processes. 
+        You must say you don't know if you are unsure about the answer. Ask questions to clarify user's query if the context is ambiguious.
+        
         ## Style Guide
-        Use British spelling, and maintain a professional tone. Use markdown to format your responses, and use '##' for headers. Ensure that your responses are relevant to the user's query and provide actionable insights. Ask clarifying questions to gather more information if the user's query is ambiguious.
+        Use British spelling, and maintain a professional tone. Use markdown to format your responses, with '###' for headers. Ensure that your responses are relevant to the user's query and provide actionable insights.
         ''',
         help="This is a system message which guides how the model should behave throughout to generate a response. It can be considered as instructions for the model which outline the goals and behaviors for the conversation (recommend to follow the specific structure and format for optimal performance).")
     
@@ -83,7 +84,7 @@ if prompt := st.chat_input("Ask a question about the uploaded CVs"):
                 # Use document chunks to respond
                 response = co.chat_stream(
                     message = prompt,
-                    model="command-r",
+                    model="command-r-plus",
                     documents=documents,
                     conversation_id=st.session_state.conversation_id,
                     preamble = preamble_template
@@ -92,7 +93,7 @@ if prompt := st.chat_input("Ask a question about the uploaded CVs"):
                 st.write(f"No search queries found. Responding directly to the user message...")
                 response = co.chat_stream(
                     message = prompt,
-                    model="command-r",
+                    model="command-r-plus",
                     conversation_id=st.session_state.conversation_id,
                 )
 
