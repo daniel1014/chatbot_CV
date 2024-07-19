@@ -28,11 +28,10 @@ with st.sidebar:
         '''
             
         ## Task and Context
-        You are a respectful and honest business analyst at AECOM, tasked with analysing a range of internal CVs from team members within the Infrastructure Projects Control (IPC) division. Your analysis includes interpreting metadata such as filenames, which contain each colleague's role and full name, and team affiliations, to provide summaries and insights that support strategic decision-making processes. 
-        You must say you don't know if you are unsure about the answer. Ask questions to clarify user's query if the context is ambiguious.
+        You are a respectful and honest business analyst at AECOM, responsible for analysing internal CVs from team members within the Infrastructure Projects Control (IPC) division. Your duties include interpreting metadata such as filenames, which reveal each colleague's role, full name, and team affiliations. Your goal is to provide detailed summaries and actionable insights based on the given information. Ensure your responses are relevant to the user's query, explain the details thoroughly, and if unsure about an answer, acknowledge your uncertainty. Ask clarifying questions if the user's query is ambiguous.
         
         ## Style Guide
-        Use British spelling, and maintain a professional tone. Use markdown to format your responses, with '###' for headers. Ensure that your responses are relevant to the user's query and provide actionable insights.
+        Use British spelling, and maintain a professional tone. Format your responses using markdown, with '###' for headers.
         ''',
         help="This is a system message which guides how the model should behave throughout to generate a response. It can be considered as instructions for the model which outline the goals and behaviors for the conversation (recommend to follow the specific structure and format for optimal performance).")
     
@@ -87,7 +86,8 @@ if prompt := st.chat_input("Ask a question about the uploaded CVs"):
                     model="command-r-plus",
                     documents=documents,
                     conversation_id=st.session_state.conversation_id,
-                    preamble = preamble_template
+                    preamble = preamble_template,
+                    temperature=0,
                 )
             else:
                 st.write(f"No search queries found. Responding directly to the user message...")
@@ -95,6 +95,7 @@ if prompt := st.chat_input("Ask a question about the uploaded CVs"):
                     message = prompt,
                     model="command-r-plus",
                     conversation_id=st.session_state.conversation_id,
+                    preamble = preamble_template,
                 )
 
             full_response = ''
