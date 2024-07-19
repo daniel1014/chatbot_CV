@@ -112,14 +112,15 @@ def qdrant_search(qdrant_client, collection_name, query: str, team_filter: Optio
     docs_retrieved = [hit.metadata for hit in search_result]
     return docs_retrieved
 
+@st.cache_data()
 def load_text_from_docx(file : str) -> str:
     doc = docx.Document(file)
     full_text = []
     
     # Extract text from paragraphs
     for para in doc.paragraphs:
-        if para.text:   # Skip empty paragraphs to avoid "\n\n\n" which leads to very short chunk 
-            full_text.append(para.text)
+        # if para.text:   # Skip empty paragraphs to avoid "\n\n\n" which leads to very short chunk 
+        full_text.append(para.text)
     
     # Extract text from tables
     for table in doc.tables:
@@ -132,6 +133,7 @@ def load_text_from_docx(file : str) -> str:
     
     return text
 
+@st.cache_data()
 def chunk_text(text: str, chunk_size: int = 1024, chunk_overlap: int = 100) -> list:
     # Split the text into chunks
     text_splitter = RecursiveCharacterTextSplitter(

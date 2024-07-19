@@ -82,7 +82,7 @@ with tab2:
             # Process the document
             for uploaded_file in uploaded_files:
                 text = RAG_utils.load_text_from_docx(uploaded_file)
-                chunks = RAG_utils.chunk_text(text)
+                chunks = RAG_utils.chunk_text(text, chunk_size = 1200, chunk_overlap = 100)
         
                 # Create metadata
                 metadata = [{"filename": uploaded_file.name,"team": team} for _ in range(len(chunks))]
