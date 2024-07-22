@@ -9,7 +9,7 @@ html_utils.set_page_background_local("assets/background.png")
 if "role" not in st.session_state:
     st.session_state.role = None
 if "collection_name" not in st.session_state:
-    st.session_state.collection_name = "CV_hybrid"
+    st.session_state.collection_name = "CV_documents"
 
 ROLES = ["User", "Admin"]
 

@@ -34,7 +34,8 @@ with st.sidebar:
         Use British spelling, and maintain a professional tone. Format your responses using markdown, with '###' for headers.
         ''',
         help="This is a system message which guides how the model should behave throughout to generate a response. It can be considered as instructions for the model which outline the goals and behaviors for the conversation (recommend to follow the specific structure and format for optimal performance).")
-    
+        mode = st.selectbox("Model mode", ["hybrid", "dense"], index=1, 
+                            help=":orange[Experiments - Select the model mode for extracting the relevant documents from our vector database. ")
 
 # initialize chat 
 if "messages" not in st.session_state:
@@ -54,7 +55,7 @@ st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
 # initialize Cohere and Qdrant clients
 co = RAG_utils.initialize_cohere_client()
-qdrant_client = RAG_utils.initialize_qdrant_client(hybrid=True)        # Use hybrid indexing by Qdrant from the RAG_utils.py
+qdrant_client = RAG_utils.initialize_qdrant_client(mode=mode)        # Use hybrid indexing by Qdrant from the RAG_utils.py
 
 if prompt := st.chat_input("Ask a question about the uploaded CVs"):
     if 'conversation_id' not in st.session_state:

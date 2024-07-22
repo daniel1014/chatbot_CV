@@ -26,7 +26,7 @@ def delete_confirm():
 
 with tab1:
     # Fetch documents from Qdrant collection
-    qdrant_client = RAG_utils.initialize_qdrant_client(hybrid=True)        # Use hybrid indexing by Qdrant from the RAG_utils.py
+    qdrant_client = RAG_utils.initialize_qdrant_client(mode="dense")        # Use hybrid indexing by Qdrant from the RAG_utils.py
     
     # Fetch all documents from the collection
     st.session_state['stored_docs'] = RAG_utils.qdrant_scroll(qdrant_client, st.session_state.collection_name)
