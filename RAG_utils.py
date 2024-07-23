@@ -55,15 +55,16 @@ def qdrant_scroll(qdrant_client, collection_name):
     # Retrieve all documents from the collection
     results = qdrant_client.scroll(
     collection_name=collection_name,
-    with_payload=['filename', 'team'],
+    with_payload=['filename', 'team', 'link'],  # retrieve metadata
     limit=10000  
     )
-    stored_docs = {'filename': [], 'team': []}
+    stored_docs = {'filename': [], 'team': [], 'link': []}
     for result in results[0]:
         # store distinct filenames and teams
         if result.payload['filename'] not in stored_docs['filename']:
             stored_docs['filename'].append(result.payload['filename'])
             stored_docs['team'].append(result.payload['team'])
+            stored_docs['link'].append(result.payload['link'])
     return stored_docs
 
 

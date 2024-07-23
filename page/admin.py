@@ -37,6 +37,7 @@ with tab1:
         data = st.dataframe(data=df, on_select="rerun", selection_mode="single-row", use_container_width=True, key="data",
                             column_config={"filename": "File name", 
                                            "team": "Team", 
+                                           "link": "SharePoint link",
                                            "_index": st.column_config.Column(
                                                "Item",
                                                width=20)
@@ -76,16 +77,17 @@ with tab2:
     index=None,
     placeholder="Select the team for the uploading CV...",
     )
+    link = st.text_input("Paste the SharePoint link to the CV", help="This link will be shared to the chatbot user for reference")
     
     if st.button("Process and Upload"):
-        if uploaded_files and team:
+        if uploaded_files and team and link:
             # Process the document
             for uploaded_file in uploaded_files:
                 text = RAG_utils.load_text_from_docx(uploaded_file)
                 chunks = RAG_utils.chunk_text(text, chunk_size = 1200, chunk_overlap = 100)
         
                 # Create metadata
-                metadata = [{"filename": uploaded_file.name,"team": team} for _ in range(len(chunks))]
+                metadata = [{"filename": uploaded_file.name,"team": team, "link":link} for _ in range(len(chunks))]
                 
                 # Initialize Qdrant collection
                 RAG_utils.qdrant_add(
